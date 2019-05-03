@@ -1,6 +1,23 @@
 Linux kernel
 ============
 
+start of Late Lee  
+cp vexpress-a9.config .config  
+make CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm  
+result:  
+arch/arm/boot/zImage & arch/arm/boot/dts/vexpress-v2p-ca9.dtb  
+
+u-boot way:  
+sudo apt-get install u-boot-tools
+cp vexpress-a9.config .config  
+make uImage LOADADDR=0x60003000 CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm  
+make CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm dtbs  
+result:  
+arch/arm/boot/uImage & arch/arm/boot/dts/vexpress-v2p-ca9.dtb  
+
+end of Late Lee  
+
+
 This file was moved to Documentation/admin-guide/README.rst
 
 Please notice that there are several guides for kernel developers and users.
