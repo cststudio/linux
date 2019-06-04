@@ -2,18 +2,48 @@ Linux kernel
 ============
 
 start of Late Lee  
-cp vexpress-a9.config .config  
+
+## vexpress a9
+
+cp config.vexpress-a9 .config  
 make CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm  
 result:  
 arch/arm/boot/zImage & arch/arm/boot/dts/vexpress-v2p-ca9.dtb  
 
 u-boot way:  
-sudo apt-get install u-boot-tools
-cp vexpress-a9.config .config  
+sudo apt-get install u-boot-tools  
+cp config.vexpress-a9 .config  
 make uImage LOADADDR=0x60003000 CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm  
-make CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm dtbs  
+make dtbs CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm  
 result:  
 arch/arm/boot/uImage & arch/arm/boot/dts/vexpress-v2p-ca9.dtb  
+
+## imx6q & imx6ul
+cp config.imx6 .config  
+make zImage CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm 
+make dtbs CROSS_COMPILE=arm-unknown-linux-gnueabihf- ARCH=arm 
+or:   
+make zImage && make dtbs
+
+run: 
+```
+qemu-system-arm -M sabrelite -nographic -m 512M \
+-kernel ./zImage \
+-dtb ./dts/imx6q-sabrelite.dtb \
+-append "earlyprintk=vga log_buf_len=25M console=ttymxc0,115200 rootfstype=ext3 root=/dev/mmcblk1 rw rootwait init=/sbin/init" \
+-drive file=rootfs.img,format=raw,id=mycard -device sd-card,drive=mycard \
+-net nic,macaddr=6c:61:74:65:6c:65 -net tap,ifname=tap0
+```
+
+imx6ul:  
+```
+qemu-system-arm -M mcimx6ul-evk -nographic -m 512M \
+-kernel ./zImage \
+-dtb ./dts/imx6ull-14x14-evk.dtb \
+-append "earlyprintk=vga log_buf_len=25M console=ttymxc0,115200 rootfstype=ext3 root=/dev/mmcblk1 rw rootwait init=/sbin/init" \
+-drive file=rootfs.img,format=raw,id=mycard -device sd-card,drive=mycard \
+-net nic,macaddr=6c:61:74:65:6c:65 -net tap,ifname=tap0
+```
 
 end of Late Lee  
 
