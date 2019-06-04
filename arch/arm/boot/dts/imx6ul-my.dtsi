@@ -1,0 +1,43 @@
+/**
+im6ul平台测试使用的设备树定义
+*/
+
+/ {
+    leds {
+        compatible = "gpio-leds";
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_gpio_leds>;
+        status = "okay";
+        led1 {
+            label = "led1-111";
+            gpios = <&gpio5 7 GPIO_ACTIVE_LOW>;
+            linux,default-trigger = "heartbeat,timer";
+        };
+        led2 {
+            label = "led2";
+            gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
+        };
+        
+        led3{
+            label = "led3";
+            gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
+            default-state = "off";
+        };
+        led4{
+            label = "led4";
+            gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
+            default-state = "off";
+        };	
+	};
+
+    pinctrl_gpio_leds: gpio_leds{
+        fsl,pins = <
+            MX6UL_PAD_SNVS_TAMPER7__GPIO5_IO07      0x70a1      //led1
+            MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02      0x70a1      //led2
+            MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09      0x70a1
+            // MX6UL_PAD_GPIO1_IO09__GPIO1_IO09        0x70a1 // claim at pinctrl_usdhc1
+            MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05      0x70a1
+        >;
+    };
+    
+}; // end of all
